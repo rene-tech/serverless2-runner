@@ -10,10 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: echo "TAG=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"      # tag v0.1.3 -> image tag 0.1.3
       - uses: docker/login-action@v3
         with: { registry: ghcr.io, username: "${{ github.actor }}", password: "${{ secrets.GITHUB_TOKEN }}" }
       - uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ghcr.io/rene-tech/serverless2/jobs:${{ github.ref_name }}
+          tags: ghcr.io/rene-tech/serverless2/jobs:${{ env.TAG }}
